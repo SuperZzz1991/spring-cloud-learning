@@ -1,14 +1,14 @@
 # spring-cloud-learning
 
-### Eureka:服务注册/发现
+## Eureka:服务注册/发现
 
-###### 模块说明
+##### 模块说明
 
 * eureka-server --eureka注册中心
 * eureka-security-server -- 带登录认证的eureka注册中心
 * eureka-client -- eureka客户端
 
-###### 常用配置
+##### 常用配置
 
 ```yml
 eureka:
@@ -30,15 +30,15 @@ eureka:
     enable-self-preservation: false #关闭eureka服务端的保护机制
 ```
 
-### Ribbon：负载均衡
+## Ribbon：负载均衡
 
-###### 模块说明
+##### 模块说明
 
 * eureka-server --eureka注册中心
 * euser-service -- 提供User对象CRUD接口的服务（多实例）
 * ribbon-service -- ribbon服务调用测试服务
 
-###### 全局配置
+##### 全局配置
 
 ```yml
 ribbon:
@@ -50,7 +50,7 @@ ribbon:
   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #修改负载均衡算法
 ```
 
-###### 指定服务进行配置
+##### 指定服务进行配置
 
 ```yml
 user-service:
@@ -63,7 +63,7 @@ user-service:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #修改负载均衡算法
 ```
 
-###### Ribbon的负载均衡策略
+##### Ribbon的负载均衡策略
 
 >所谓的负载均衡策略，就是当A服务调用B服务时，此时B服务有多个实例，这时A服务以何种方式来选择调用的B实例，ribbon可以选择以下几种负载均衡策略。
 
