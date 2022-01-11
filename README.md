@@ -30,6 +30,41 @@ eureka:
     enable-self-preservation: false #关闭eureka服务端的保护机制
 ```
 
+##### pom.xml依赖
+
+```xml
+<dependencies>
+    <!--服务端依赖-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+    </dependency>
+    <!--客户端依赖-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <!--Security登录中心依赖-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+</dependencies>
+```
+
+##### 使用
+
+* @EnableEurekaServer
+* @EnableDiscoveryClient
+* Eureka注册中心添加认证
+    * 1.服务端添加Java配置WebSecurityConfig
+    * 2.客户端通过用户名密码进行注册(http://${username}:${password}@${hostname}:${port}/eureka/)
+
+
 ## Ribbon：负载均衡
 
 ##### 模块说明
@@ -74,3 +109,59 @@ user-service:
 * com.netflix.loadbalancer.BestAvailableRule：选择并发较小的实例；
 * com.netflix.loadbalancer.AvailabilityFilteringRule：先过滤掉故障实例，再选择并发较小的实例；
 * com.netflix.loadbalancer.ZoneAwareLoadBalancer：采用双重过滤，同时过滤不是同一区域的实例和故障实例，选择并发较小的实例。
+
+##### pom.xml依赖
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+    </dependency>
+</dependencies>
+```
+
+##### 使用
+
+* RestTemplate的使用(GET,POST,PUT,DELETE)
+    * GET
+        ```
+        <T> T getForObject(String url, Class<T> responseType, Object... uriVariables);
+        <T> T getForObject(String url, Class<T> responseType, Map<String, ?> uriVariables);
+        <T> T getForObject(URI url, Class<T> responseType);
+        <T> ResponseEntity<T> getForEntity(String url, Class<T> responseType, Object... uriVariables);
+        <T> ResponseEntity<T> getForEntity(String url, Class<T> responseType, Map<String, ?> uriVariables);
+        <T> ResponseEntity<T> getForEntity(URI var1, Class<T> responseType);
+        ```
+    * POST
+        ```
+        <T> T postForObject(String url, @Nullable Object request, Class<T> responseType, Object... uriVariables);
+        <T> T postForObject(String url, @Nullable Object request, Class<T> responseType, Map<String, ?> uriVariables);
+        <T> T postForObject(URI url, @Nullable Object request, Class<T> responseType);
+        <T> ResponseEntity<T> postForEntity(String url, @Nullable Object request, Class<T> responseType, Object... uriVariables);
+        <T> ResponseEntity<T> postForEntity(String url, @Nullable Object request, Class<T> responseType, Map<String, ?> uriVariables);
+        <T> ResponseEntity<T> postForEntity(URI url, @Nullable Object request, Class<T> responseType);
+        ```
+    * PUT
+        ```
+        void put(String url, @Nullable Object request, Object... uriVariables);
+        void put(String url, @Nullable Object request, Map<String, ?> uriVariables);
+        void put(URI url, @Nullable Object request);
+        ```
+    * DELETE
+        ```
+        void delete(String url, Object... uriVariables);
+        void delete(String url, Map<String, ?> uriVariables);
+        void delete(URI url);
+        ```
+* RibbonConfig中配置@LoadBalanced
+```java
+@Configuration
+public class RibbonConfig {
+   @Bean
+   @LoadBalanced
+   public RestTemplate restTemplate(){
+       return new RestTemplate();
+   }
+}
+```
