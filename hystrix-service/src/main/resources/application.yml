@@ -13,3 +13,10 @@ eureka:
 
 service-url:
   user-service: http://user-service
+
+#开启Actuator的hystrix.stream端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'hystrix.stream' #暴露hystrix监控端点
