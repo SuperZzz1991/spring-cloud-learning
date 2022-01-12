@@ -1,4 +1,4 @@
-package com.donghao.cloud.ribbonservice.pojo;
+package com.donghao.cloud.hystrixservice.pojo;
 
 import lombok.Data;
 
