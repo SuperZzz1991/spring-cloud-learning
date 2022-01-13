@@ -1,0 +1,16 @@
+server:
+  port: 9201
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: circuitbreaker_route
+          uri: http://localhost:8201
+          predicates:
+            - Method=GET
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: myCircuitBreaker
+                fallbackUri: forward:/fallback

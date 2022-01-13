@@ -59,7 +59,7 @@ public class UserService {
     @PostConstruct
     public void initData() {
         userList = new ArrayList<>();
-        userList.add(new User(1L, "Tome", "123456"));
+        userList.add(new User(1L, "Tom", "123456"));
         userList.add(new User(2L, "Jerry", "123456"));
         userList.add(new User(3L, "Maike", "123456"));
     }

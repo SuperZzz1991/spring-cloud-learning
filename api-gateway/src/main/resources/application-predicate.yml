@@ -1,0 +1,80 @@
+server:
+  port: 9201
+
+service-url:
+  user-service: http://localhost:8201
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: after_route
+          uri: ${service-url.user-service}
+          predicates:
+            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
+        - id: before_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Before=2019-09-24T16:30:00+08:00[Asia/Shanghai]
+        - id: after_route
+          uri: ${service-url.user-service}
+          predicates:
+            - After=2019-09-24T16:30:00+08:00[Asia/Shanghai]
+        - id: between_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Between=2019-09-24T16:30:00+08:00[Asia/Shanghai], 2019-09-25T16:30:00+08:00[Asia/Shanghai]
+        - id: cookie_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Cookie=username,macro
+        - id: header_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Header=X-Request-Id, \d+
+        - id: host_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Host=**.macrozheng.com
+        - id: method_route
+          uri: ${service-url.user-service}
+          predicates:
+            - Method=GET
+        - id: path_route
+          uri: ${service-url.user-service}/user/{id}
+          predicates:
+            - Path=/user/{id}
+        - id: query_route
+          uri: ${service-url.user-service}/user/getByUsername
+          predicates:
+            - Query=username
+        - id: remoteaddr_route
+          uri: ${service-url.user-service}
+          predicates:
+            - RemoteAddr=192.168.1.1/24
+        - id: weight_high
+          uri: http://localhost:8201
+          predicates:
+            - Weight=group1, 8
+        - id: weight_low
+          uri: http://localhost:8202
+          predicates:
+            - Weight=group1, 2
+        - id: add_request_parameter_route
+          uri: http://localhost:8201
+          filters:
+            - AddRequestParameter=username, Tom
+          predicates:
+            - Method=GET
+        - id: strip_prefix_route
+          uri: http://localhost:8201
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - StripPrefix=2
+        - id: prefix_path_route
+          uri: http://localhost:8201
+          predicates:
+            - Method=GET
+          filters:
+            - PrefixPath=/user
